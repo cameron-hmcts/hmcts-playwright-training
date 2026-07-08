@@ -1,17 +1,10 @@
-import { test, expect } from '@playwright/test';
+import { test } from './fixtures/fixtures';
 import { getRequiredEnv } from './helpers/env';
 
-test('problem user can log in and see the products page', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-  await expect(page.getByRole('textbox', { name: 'Username' })).toBeVisible();
-  await expect(page.getByRole('textbox', { name: 'Password' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Login' })).toBeVisible();
+test('problem user can log in and see the products page', async ({ loginPage, inventoryPage }) => {
+  await loginPage.navigate();
+  await loginPage.checksLoginPage();
+  await loginPage.login(getRequiredEnv('TEST_USER_PROBLEM'), getRequiredEnv('TEST_PASSWORD'));
 
-  await page.getByPlaceholder('Username').fill(getRequiredEnv('TEST_USER_PROBLEM'));
-  await page.getByPlaceholder('Password').fill(getRequiredEnv('TEST_PASSWORD'));
-  await page.getByRole('button', { name: 'Login' }).click();
-
-  await expect(page).toHaveURL(/.*inventory.html/);
-  await expect(page.getByText('Products')).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Open Menu' })).toBeVisible();
+  await inventoryPage.checksInventoryPage();
 });
