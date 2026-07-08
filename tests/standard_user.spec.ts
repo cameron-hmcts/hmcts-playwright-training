@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { getRequiredEnv } from './helpers/env';
 
 test('standard user can buy a backpack and complete checkout', async ({ page }) => {
   await page.goto('https://www.saucedemo.com/');
@@ -6,16 +7,15 @@ test('standard user can buy a backpack and complete checkout', async ({ page }) 
   await expect(page.getByRole('textbox', { name: 'Password' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Login' })).toBeVisible();
 
-  await page.getByPlaceholder('Username').fill(process.env.TEST_USER_STANDARD!);
-  await page.getByPlaceholder('Password').fill(process.env.TEST_PASSWORD!);
+  await page.getByPlaceholder('Username').fill(getRequiredEnv('TEST_USER_STANDARD'));
+  await page.getByPlaceholder('Password').fill(getRequiredEnv('TEST_PASSWORD'));
   await page.getByRole('button', { name: 'Login' }).click();
   await expect(page).toHaveURL(/.*inventory.html/);
   await expect(page.getByText('Products')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Open Menu' })).toBeVisible();
 
   await page.locator('.inventory_item_description').getByRole('link', { name: 'Sauce Labs Backpack' }).click();
-  // Q1 
-  // await page.getByRole('link', { name: 'Sauce Labs Backpack' }).first().click();
+
   await expect(page).toHaveURL(/.*inventory-item.html/);
   await expect(page.getByRole('button', { name: 'Back to products' })).toBeVisible();
   await expect(page.getByText('Sauce Labs Backpack')).toBeVisible();
@@ -24,8 +24,7 @@ test('standard user can buy a backpack and complete checkout', async ({ page }) 
   await expect(page.getByRole('button', { name: 'Remove' })).toBeVisible();
 
   await page.locator('a[data-test="shopping-cart-link"]').click();
-  // Q1
-  // await page.getByText('1').click();
+
   await expect(page).toHaveURL(/.*cart.html/);
   await expect(page.getByText('Your Cart')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Checkout' })).toBeVisible();
