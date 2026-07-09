@@ -1,23 +1,24 @@
 import { expect, Page, Locator } from '@playwright/test';
-import { NavBarComponent } from '../components/navBar.component';
+import { BasePage } from './basePage';
 
-export class InventoryPage {
-  private readonly page: Page;
+export class InventoryPage extends BasePage {
   private readonly pageTitle: Locator;
+  private readonly sortDropdown: Locator;
   private readonly inventoryItemDescriptions: Locator;
-  readonly navBar: NavBarComponent;
 
   constructor(page: Page) {
-    this.page = page;
-    this.pageTitle = page.getByText('Products');
+    super(page);
+    this.pageTitle = page.locator('[data-test="title"]');
+    this.sortDropdown = page.locator('[data-test="product-sort-container"]');
     this.inventoryItemDescriptions = page.locator('.inventory_item_description');
-    this.navBar = new NavBarComponent(page);
   }
 
   async checksInventoryPage(): Promise<void> {
     await expect(this.page).toHaveURL(/.*inventory.html/);
-    await expect(this.pageTitle).toBeVisible();
+    await expect(this.pageTitle).toHaveText('Products');
+    await expect(this.sortDropdown).toBeVisible();
     await this.navBar.checksNavBar();
+    await this.footer.checksFooter();
   }
 
   async selectProduct(productName: string): Promise<void> {

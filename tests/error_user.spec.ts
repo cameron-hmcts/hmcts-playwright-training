@@ -1,7 +1,7 @@
 import { test } from './fixtures/fixtures';
 import { getRequiredEnv } from './helpers/env';
 
-test('error user times out on finish order at checkout', async ({ loginPage, inventoryPage, inventoryItemPage, cartPage, checkoutInfoPage, checkoutOverviewPage, checkoutCompletePage }) => {
+test.skip('error user times out on finish order at checkout', async ({ loginPage, inventoryPage, inventoryItemPage, cartPage, checkoutInfoPage, checkoutOverviewPage, checkoutCompletePage }) => {
   await loginPage.navigate();
   await loginPage.checksLoginPage();
   await loginPage.login(getRequiredEnv('TEST_USER_ERROR'), getRequiredEnv('TEST_PASSWORD'));

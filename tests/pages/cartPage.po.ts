@@ -1,24 +1,31 @@
 import { expect, Page, Locator } from '@playwright/test';
-import { NavBarComponent } from '../components/navBar.component';
+import { BasePage } from './basePage';
 
-export class CartPage {
-  private readonly page: Page;
+export class CartPage extends BasePage {
   private readonly pageTitle: Locator;
+  private readonly qtyLabel: Locator;
+  private readonly descriptionLabel: Locator;
+  private readonly continueShoppingButton: Locator;
   private readonly checkoutButton: Locator;
-  readonly navBar: NavBarComponent;
 
   constructor(page: Page) {
-    this.page = page;
-    this.pageTitle = page.getByText('Your Cart');
+    super(page);
+    this.pageTitle = page.locator('[data-test="title"]');
+    this.qtyLabel = page.locator('[data-test="cart-quantity-label"]');
+    this.descriptionLabel = page.locator('[data-test="cart-desc-label"]');
+    this.continueShoppingButton = page.getByRole('button', { name: 'Continue Shopping' });
     this.checkoutButton = page.getByRole('button', { name: 'Checkout' });
-    this.navBar = new NavBarComponent(page);
   }
 
   async checksCartPage(): Promise<void> {
     await expect(this.page).toHaveURL(/.*cart.html/);
-    await expect(this.pageTitle).toBeVisible();
+    await expect(this.pageTitle).toHaveText('Your Cart');
+    await expect(this.qtyLabel).toHaveText('QTY');
+    await expect(this.descriptionLabel).toHaveText('Description');
+    await expect(this.continueShoppingButton).toBeVisible();
     await expect(this.checkoutButton).toBeVisible();
     await this.navBar.checksNavBar();
+    await this.footer.checksFooter();
   }
 
   async proceedToCheckout(): Promise<void> {
