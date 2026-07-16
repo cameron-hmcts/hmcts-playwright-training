@@ -8,13 +8,49 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    env:
+      TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+      TEST_USER_STANDARD: ${{ secrets.TEST_USER_STANDARD }}
+      TEST_USER_LOCKED_OUT: ${{ secrets.TEST_USER_LOCKED_OUT }}
+      TEST_USER_PROBLEM: ${{ secrets.TEST_USER_PROBLEM }}
+      TEST_USER_PERFORMANCE_GLITCH: ${{ secrets.TEST_USER_PERFORMANCE_GLITCH }}
+      TEST_USER_ERROR: ${{ secrets.TEST_USER_ERROR }}
+      TEST_USER_VISUAL: ${{ secrets.TEST_USER_VISUAL }}
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
       with:
-        node-version: lts/*
+        node-version: 22
+        cache: yarn
+    - name: Validate required credentials
+      run: |
+        required_vars=(
+          TEST_PASSWORD
+          TEST_USER_STANDARD
+          TEST_USER_LOCKED_OUT
+          TEST_USER_PROBLEM
+          TEST_USER_PERFORMANCE_GLITCH
+          TEST_USER_ERROR
+          TEST_USER_VISUAL
+        )
+
+        missing=0
+        for var in "${required_vars[@]}"; do
+          if [ -z "${!var}" ]; then
+            echo "Missing required secret: $var"
+            missing=1
+          fi
+        done
+
+        if [ "$missing" -eq 1 ]; then
+          echo "One or more required secrets are missing. Configure them in Settings > Secrets and variables > Actions."
+          exit 1
+        fi
     - name: Install dependencies
-      run: npm install -g yarn && yarn
+      run: |
+        corepack enable
+        yarn --version
+        yarn install --immutable
     - name: Install Playwright Browsers
       run: yarn playwright install --with-deps
     - name: Run Playwright tests
