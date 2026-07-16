@@ -21,7 +21,6 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: 22
-        cache: yarn
     - name: Validate required credentials
       run: |
         required_vars=(
@@ -49,6 +48,7 @@ jobs:
     - name: Install dependencies
       run: |
         corepack enable
+        corepack prepare yarn@4.6.0 --activate
         yarn --version
         yarn install --immutable
     - name: Install Playwright Browsers
