@@ -34,8 +34,16 @@ export class InventoryItemPage extends BasePage {
     await this.addToCartButton.click();
   }
 
+  async removeFromCart(): Promise<void> {
+    await this.removeButton.click();
+  }
+
   async checksItemAddedToCart(): Promise<void> {
     await expect(this.removeButton).toBeVisible();
+  }
+
+  async checksItemRemovedFromCart(): Promise<void> {
+    await expect(this.addToCartButton).toBeVisible();
   }
 
   async goToCart(): Promise<void> {

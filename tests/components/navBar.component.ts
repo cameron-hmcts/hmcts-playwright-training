@@ -42,6 +42,11 @@ export class NavBarComponent {
     await expect(this.cartBadge).toHaveText(String(expectedCount));
   }
 
+  /** Assert the cart badge is not displayed when no items are in the cart. */
+  async checksCartIsEmpty(): Promise<void> {
+    await expect(this.cartBadge).toHaveCount(0);
+  }
+
   /** Navigate to the cart. */
   async goToCart(): Promise<void> {
     await this.cartLink.click();

@@ -1,10 +1,14 @@
 import { test } from './fixtures/fixtures';
 import { getRequiredEnv } from './helpers/env';
 
-test('visual user can log in and see the products page', async ({ loginPage, inventoryPage }) => {
-  await loginPage.navigate();
-  await loginPage.checksLoginPage();
-  await loginPage.login(getRequiredEnv('TEST_USER_VISUAL'), getRequiredEnv('TEST_PASSWORD'));
+test.describe('visual user inventory', () => {
+  test.beforeEach(async ({ loginPage }) => {
+    await loginPage.navigate();
+    await loginPage.checksLoginPage();
+    await loginPage.login(getRequiredEnv('TEST_USER_VISUAL'), getRequiredEnv('TEST_PASSWORD'));
+  });
 
-  await inventoryPage.checksInventoryPage();
+  test('can log in and see the products page', async ({ inventoryPage }) => {
+    await inventoryPage.checksInventoryPage();
+  });
 });
