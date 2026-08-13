@@ -6,10 +6,10 @@ test.describe('SauceDemo Accessibility Audits', () => {
     await loginPage.navigate();
     await loginPage.checksLoginPage();
 
-    // Use centralized makeAxeBuilder fixture configured with WCAG A/AA standard tags
+    // Use centralized makeAxeBuilder fixture configured with WCAG A/AA
     const axeResults = await makeAxeBuilder().analyze();
 
-    // Attach results to testInfo (The Bridge: Worker -> Reporter)
+    // Attach results to testInfo
     await testInfo.attach('a11y-results', {
       body: JSON.stringify(axeResults.violations, null, 2),
       contentType: 'application/json',
@@ -23,7 +23,7 @@ test.describe('SauceDemo Accessibility Audits', () => {
     await loginPage.login(getRequiredEnv('TEST_USER_STANDARD'), getRequiredEnv('TEST_PASSWORD'));
     await inventoryPage.checksInventoryPage();
 
-    // Convenient fixture that analyzes page and automatically attaches 'a11y-results' to testInfo
+    // fixture that analyzes page and automatically attaches 'a11y-results' to testInfo
     const results = await auditA11y();
     console.log(`[A11y Check] Inventory Page Violations: ${results.violations.length}`);
   });
