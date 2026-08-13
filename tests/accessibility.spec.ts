@@ -1,7 +1,7 @@
 import { test, expect } from './fixtures/fixtures';
 import { getRequiredEnv } from './helpers/env';
 
-test.describe('SauceDemo Accessibility Audits', () => {
+test.describe('Accessibility tests', () => {
   test('Login Page Accessibility Audit using makeAxeBuilder fixture', async ({ loginPage, makeAxeBuilder }, testInfo) => {
     await loginPage.navigate();
     await loginPage.checksLoginPage();
@@ -28,7 +28,7 @@ test.describe('SauceDemo Accessibility Audits', () => {
     console.log(`[A11y Check] Inventory Page Violations: ${results.violations.length}`);
   });
 
-  test('Cart Page Accessibility Audit', async ({ loginPage, inventoryPage, cartPage, makeAxeBuilder }, testInfo) => {
+  test('Cart Page Accessibility test', async ({ loginPage, inventoryPage, cartPage, makeAxeBuilder }, testInfo) => {
     await loginPage.navigate();
     await loginPage.login(getRequiredEnv('TEST_USER_STANDARD'), getRequiredEnv('TEST_PASSWORD'));
     await inventoryPage.checksInventoryPage();
