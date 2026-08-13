@@ -28,11 +28,13 @@ export default defineConfig({
         ['list'],
         ['html', { open: 'never' }],
         ['allure-playwright', { outputFolder: 'allure-results', detail: true }],
+        ['./reporters/A11yReporter.ts'],
       ]
     : [
         ['list'],
         ['html', { open: 'on-failure' }],
         ['allure-playwright', { outputFolder: 'allure-results', detail: true }],
+        ['./reporters/A11yReporter.ts'],
       ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
