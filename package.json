@@ -3,12 +3,19 @@
   "packageManager": "yarn@4.6.0",
   "devDependencies": {
     "@playwright/test": "^1.61.0",
-    "@types/node": "^26.0.0"
+    "@types/node": "^26.0.0",
+    "allure-commandline": "^2.43.0",
+    "allure-playwright": "^3.10.2"
   },
   "dependencies": {
     "dotenv": "^17.4.2"
   },
   "scripts": {
-    "test": "playwright test --project=chromium --headed"
+    "test": "playwright test --project=chromium",
+    "test:headed": "playwright test --project=chromium --headed",
+    "allure:generate": "allure generate allure-results --clean -o allure-report",
+    "allure:open": "allure open allure-report",
+    "allure:serve": "allure serve allure-results",
+    "allure": "yarn allure:generate && yarn allure:open"
   }
 }

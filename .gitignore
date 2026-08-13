@@ -20,6 +20,10 @@ node_modules/
 /playwright/.cache/
 /playwright/.auth/
 
+# Allure Reports
+/allure-results/
+/allure-report/
+
 # Environment variables (credentials)
 .env
 .env.local
